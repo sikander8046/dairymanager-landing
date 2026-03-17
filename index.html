@@ -1,0 +1,1954 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DairyManager — Apki Dairy, Digital</title>
+<meta name="description" content="Pakistan's most complete dairy farm management software. Track milk, health, breeding, finance, and partners — all in one place.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #15803d;
+    --green-dark: #14532d;
+    --green-light: #dcfce7;
+    --green-mid: #22c55e;
+    --cream: #fefce8;
+    --warm: #fafaf7;
+    --earth: #78716c;
+    --gold: #d97706;
+    --gold-light: #fef3c7;
+    --text: #1c1917;
+    --text-muted: #57534e;
+    --border: #e7e5e0;
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    background: var(--warm);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .urdu { font-family: 'Noto Nastaliq Urdu', serif; direction: rtl; line-height: 2; }
+  .hidden { display: none !important; }
+
+  /* NAVBAR */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .nav-logo-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--green-dark), var(--green-mid));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+
+  .nav-logo-text {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--text);
+  }
+
+  .nav-logo-text span { color: var(--green); }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .lang-toggle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--warm);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: all 0.2s;
+  }
+
+  .lang-toggle:hover { border-color: var(--green); color: var(--green); }
+
+  .btn-nav {
+    background: var(--green);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    font-family: 'Sora', sans-serif;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-nav:hover { background: var(--green-dark); transform: translateY(-1px); }
+
+  .btn-nav-outline {
+    background: transparent;
+    color: var(--text);
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+
+  .btn-nav-outline:hover { border-color: var(--green); color: var(--green); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background: linear-gradient(160deg, var(--green-dark) 0%, #166534 40%, #15803d 70%, #16a34a 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 24px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+      radial-gradient(circle at 20% 50%, rgba(255,255,255,0.04) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255,255,255,0.06) 0%, transparent 40%);
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 999px;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 28px;
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  .hero-badge-dot {
+    width: 6px; height: 6px;
+    background: #4ade80;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.8); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-headline {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 800;
+    color: white;
+    text-align: center;
+    line-height: 1.1;
+    max-width: 900px;
+    margin-bottom: 12px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .hero-headline .highlight {
+    color: #86efac;
+    display: block;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(16px, 2.5vw, 20px);
+    color: rgba(255,255,255,0.75);
+    text-align: center;
+    max-width: 600px;
+    line-height: 1.6;
+    margin-bottom: 8px;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero-subtitle-urdu {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(14px, 2vw, 18px);
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    direction: rtl;
+    margin-bottom: 36px;
+    animation: fadeUp 0.6s 0.25s ease both;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 60px;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .btn-primary {
+    background: white;
+    color: var(--green-dark);
+    padding: 14px 32px;
+    border-radius: 12px;
+    font-family: 'Sora', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+
+  .btn-secondary {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-family: 'Sora', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.3);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-secondary:hover { background: rgba(255,255,255,0.25); }
+
+  .hero-stats {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .hero-stat {
+    text-align: center;
+  }
+
+  .hero-stat-num {
+    font-family: 'Sora', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: white;
+    display: block;
+  }
+
+  .hero-stat-label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    font-weight: 500;
+  }
+
+  .hero-stat-label-urdu {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    direction: rtl;
+    display: block;
+  }
+
+  /* DASHBOARD PREVIEW */
+  .dashboard-preview {
+    background: var(--warm);
+    padding: 80px 24px;
+    text-align: center;
+  }
+
+  .dashboard-frame {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+    overflow: hidden;
+  }
+
+  .dashboard-bar {
+    background: var(--green-dark);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .dashboard-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+  }
+
+  .dashboard-url {
+    flex: 1;
+    background: rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+  }
+
+  .dashboard-inner {
+    padding: 24px;
+    background: #fafaf7;
+  }
+
+  .dashboard-hero-bar {
+    background: linear-gradient(135deg, var(--green-dark), var(--green));
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .dashboard-greeting {
+    color: white;
+  }
+
+  .dashboard-greeting h3 {
+    font-family: 'Sora', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .dashboard-greeting p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .dashboard-kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .dashboard-kpi {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid var(--border);
+  }
+
+  .dashboard-kpi-icon { font-size: 20px; margin-bottom: 8px; }
+  .dashboard-kpi-value { font-family: 'Sora', sans-serif; font-size: 22px; font-weight: 700; color: var(--text); }
+  .dashboard-kpi-label { font-size: 11px; color: var(--earth); margin-top: 2px; }
+
+  .dashboard-bottom {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 12px;
+  }
+
+  .dashboard-chart {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid var(--border);
+  }
+
+  .dashboard-chart-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+
+  .chart-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 80px;
+  }
+
+  .chart-bar-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    height: 100%;
+    justify-content: flex-end;
+  }
+
+  .chart-bar {
+    width: 100%;
+    background: linear-gradient(to top, var(--green-dark), var(--green-mid));
+    border-radius: 4px 4px 0 0;
+    transition: height 0.3s;
+  }
+
+  .chart-bar-label { font-size: 10px; color: var(--earth); }
+
+  .dashboard-alerts {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid var(--border);
+  }
+
+  .alert-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f5f5f4;
+    font-size: 12px;
+  }
+
+  .alert-item:last-child { border-bottom: none; }
+  .alert-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* PROBLEMS SECTION */
+  .section {
+    padding: 80px 24px;
+  }
+
+  .section-center { text-align: center; }
+
+  .section-tag {
+    display: inline-block;
+    background: var(--green-light);
+    color: var(--green-dark);
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Sora', sans-serif;
+    margin-bottom: 16px;
+  }
+
+  .section-tag-urdu {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    direction: rtl;
+    display: block;
+    font-size: 11px;
+    color: var(--green);
+    margin-top: 4px;
+  }
+
+  .section-title {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .section-title-urdu {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(18px, 2.5vw, 28px);
+    color: var(--earth);
+    direction: rtl;
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .section-subtitle {
+    font-size: 18px;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto 16px;
+    line-height: 1.6;
+  }
+
+  .section-subtitle-urdu {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 15px;
+    color: var(--earth);
+    direction: rtl;
+    max-width: 600px;
+    margin: 0 auto 48px;
+    line-height: 2;
+    display: block;
+  }
+
+  .problems-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    max-width: 1000px;
+    margin: 48px auto 0;
+  }
+
+  .problem-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .problem-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #ef4444, #f97316);
+  }
+
+  .problem-icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+
+  .problem-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .problem-title-urdu {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 13px;
+    color: var(--earth);
+    direction: rtl;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .problem-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .problem-desc-urdu {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 12px;
+    color: var(--earth);
+    direction: rtl;
+    display: block;
+    margin-top: 6px;
+    line-height: 2;
+  }
+
+  /* FEATURES */
+  .features-bg { background: white; }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    max-width: 1100px;
+    margin: 48px auto 0;
+  }
+
+  .feature-card {
+    border-radius: 20px;
+    padding: 28px;
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    border-color: var(--green);
+  }
+
+  .feature-icon-wrap {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  .feature-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .feature-title-urdu {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 14px;
+    color: var(--earth);
+    direction: rtl;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .feature-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 6px;
+  }
+
+  .feature-desc-urdu {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 12px;
+    color: var(--earth);
+    direction: rtl;
+    display: block;
+    line-height: 2;
+    margin-bottom: 12px;
+  }
+
+  .feature-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .feature-bullets li {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .feature-bullets li::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--green);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* PARTNER HIGHLIGHT */
+  .partner-section {
+    background: linear-gradient(135deg, var(--green-dark) 0%, #166534 100%);
+    padding: 80px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .partner-section::before {
+    content: '';
+    position: absolute;
+    top: -50%; right: -20%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+  }
+
+  .partner-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .partner-text h2 {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 800;
+    color: white;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .partner-text h2 .highlight { color: #86efac; }
+
+  .partner-text-urdu {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(16px, 2vw, 22px);
+    color: rgba(255,255,255,0.7);
+    direction: rtl;
+    display: block;
+    margin-bottom: 20px;
+    line-height: 2;
+  }
+
+  .partner-text p {
+    color: rgba(255,255,255,0.75);
+    line-height: 1.7;
+    margin-bottom: 8px;
+    font-size: 16px;
+  }
+
+  .partner-text p.urdu-p {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    direction: rtl;
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    line-height: 2;
+    margin-bottom: 24px;
+  }
+
+  .partner-features {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .partner-feature {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(255,255,255,0.85);
+    font-size: 15px;
+  }
+
+  .partner-feature-icon {
+    width: 32px; height: 32px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .partner-feature-urdu {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    direction: rtl;
+    display: block;
+  }
+
+  .partner-card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 28px;
+  }
+
+  .partner-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .partner-avatar {
+    width: 44px; height: 44px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+
+  .partner-card-name {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    color: white;
+    font-size: 15px;
+  }
+
+  .partner-card-role {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .partner-stat-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .partner-stat-box {
+    background: rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 12px;
+    text-align: center;
+  }
+
+  .partner-stat-val {
+    font-family: 'Sora', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #86efac;
+    display: block;
+  }
+
+  .partner-stat-lbl {
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .partner-bar {
+    background: rgba(255,255,255,0.1);
+    border-radius: 999px;
+    height: 8px;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+
+  .partner-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4ade80, #86efac);
+    border-radius: 999px;
+  }
+
+  .partner-bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 12px;
+  }
+
+  /* PRICING */
+  .pricing-bg { background: var(--warm); }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    max-width: 1100px;
+    margin: 48px auto 0;
+  }
+
+  .pricing-card {
+    background: white;
+    border-radius: 20px;
+    padding: 28px;
+    border: 1px solid var(--border);
+    position: relative;
+    transition: all 0.3s;
+  }
+
+  .pricing-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.08);
+  }
+
+  .pricing-card.featured {
+    border: 2px solid var(--green);
+    transform: scale(1.03);
+  }
+
+  .pricing-card.featured:hover { transform: scale(1.03) translateY(-4px); }
+
+  .pricing-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--green);
+    color: white;
+    padding: 4px 16px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Sora', sans-serif;
+    white-space: nowrap;
+  }
+
+  .pricing-tier {
+    font-family: 'Sora', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+
+  .pricing-tier-urdu {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 11px;
+    color: var(--earth);
+    direction: rtl;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .pricing-price {
+    font-family: 'Sora', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+
+  .pricing-price span {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--earth);
+  }
+
+  .pricing-desc {
+    font-size: 13px;
+    color: var(--earth);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .pricing-desc-urdu {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 11px;
+    color: var(--earth);
+    direction: rtl;
+    display: block;
+    margin-bottom: 16px;
+    line-height: 2;
+  }
+
+  .pricing-btn {
+    display: block;
+    text-align: center;
+    padding: 12px;
+    border-radius: 10px;
+    font-family: 'Sora', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    margin-bottom: 20px;
+    transition: all 0.2s;
+  }
+
+  .pricing-btn.primary {
+    background: var(--green);
+    color: white;
+  }
+
+  .pricing-btn.primary:hover { background: var(--green-dark); }
+
+  .pricing-btn.outline {
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .pricing-btn.outline:hover { border-color: var(--green); color: var(--green); }
+
+  .pricing-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .pricing-features li {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.4;
+  }
+
+  .pricing-features li .check { color: var(--green); font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+  .pricing-features li .cross { color: #d1d5db; font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+  /* TESTIMONIALS */
+  .testimonials-bg { background: white; }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    max-width: 1000px;
+    margin: 48px auto 0;
+  }
+
+  .testimonial-card {
+    background: var(--warm);
+    border-radius: 20px;
+    padding: 28px;
+    border: 1px solid var(--border);
+    position: relative;
+  }
+
+  .testimonial-quote {
+    font-size: 40px;
+    color: var(--green-light);
+    font-family: 'Sora', sans-serif;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  .testimonial-text {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 8px;
+    font-style: italic;
+  }
+
+  .testimonial-text-urdu {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 13px;
+    color: var(--earth);
+    direction: rtl;
+    display: block;
+    line-height: 2;
+    margin-bottom: 16px;
+    font-style: normal;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .testimonial-avatar {
+    width: 44px; height: 44px;
+    background: var(--green-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+
+  .testimonial-name {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text);
+  }
+
+  .testimonial-location {
+    font-size: 12px;
+    color: var(--earth);
+  }
+
+  .stars {
+    color: var(--gold);
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  /* CTA */
+  .cta-section {
+    background: linear-gradient(135deg, var(--green-dark) 0%, #166534 100%);
+    padding: 80px 24px;
+    text-align: center;
+  }
+
+  .cta-section h2 {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 800;
+    color: white;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .cta-section h2-urdu {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: clamp(18px, 2.5vw, 28px);
+    color: rgba(255,255,255,0.7);
+    direction: rtl;
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .cta-section p {
+    font-size: 18px;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 8px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+
+  .cta-section p.urdu-p {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 14px;
+    direction: rtl;
+    color: rgba(255,255,255,0.6);
+    line-height: 2;
+    margin-bottom: 36px;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+
+  .whatsapp-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #25d366;
+    color: white;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .whatsapp-btn:hover { background: #1fba58; transform: translateY(-2px); }
+
+  .cta-note {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--green-dark);
+    padding: 48px 24px 24px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .footer-grid {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+
+  .footer-brand-name {
+    font-family: 'Sora', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 8px;
+  }
+
+  .footer-brand-desc {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.6;
+    margin-bottom: 4px;
+  }
+
+  .footer-brand-desc-urdu {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    direction: rtl;
+    display: block;
+    margin-bottom: 16px;
+    line-height: 2;
+  }
+
+  .footer-heading {
+    font-family: 'Sora', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 16px;
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .footer-links a {
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: white; }
+
+  .footer-bottom {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-copy {
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  .footer-made {
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  .footer-made span { color: #4ade80; }
+
+  /* SCROLL ANIMATIONS */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* DIVIDER */
+  .divider {
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--green), var(--green-mid));
+    border-radius: 2px;
+    margin: 16px auto;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .partner-content { grid-template-columns: 1fr; gap: 32px; }
+    .dashboard-kpis { grid-template-columns: repeat(2, 1fr); }
+    .dashboard-bottom { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .pricing-card.featured { transform: scale(1); }
+    .hero-stats { gap: 24px; }
+    nav .btn-nav-outline { display: none; }
+  }
+
+  @media (max-width: 480px) {
+    .dashboard-kpis { grid-template-columns: repeat(2, 1fr); }
+    .hero-cta { flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">🐄</div>
+    <div class="nav-logo-text">Dairy<span>Manager</span></div>
+  </a>
+  <div class="nav-actions">
+    <button class="lang-toggle" onclick="toggleLang()" id="langBtn">اردو</button>
+    <a href="https://dairy-management-system-ecru.vercel.app/login" class="btn-nav-outline">Login</a>
+    <a href="https://dairy-management-system-ecru.vercel.app/register" class="btn-nav">Start Free Trial</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">
+    <div class="hero-badge-dot"></div>
+    <span class="en-text">Pakistan's #1 Dairy Farm Software</span>
+    <span class="ur-text hidden urdu">پاکستان کا نمبر 1 ڈیری فارم سافٹ ویئر</span>
+  </div>
+
+  <h1 class="hero-headline">
+    <span class="en-text">Run Your Dairy Farm</span>
+    <span class="ur-text hidden urdu" style="font-size: 0.7em;">اپنا ڈیری فارم چلائیں</span>
+    <span class="highlight en-text">Like a Pro</span>
+    <span class="highlight ur-text hidden urdu" style="font-size: 0.65em;">پیشہ ور انداز میں</span>
+  </h1>
+
+  <p class="hero-subtitle en-text">
+    Track milk, manage your herd, control feed costs, monitor health, and share profits with partners — all from your phone.
+  </p>
+  <p class="hero-subtitle-urdu ur-text hidden">
+    دودھ ریکارڈ کریں، جانوروں کا انتظام کریں، خوراک کے اخراجات کنٹرول کریں، صحت مانیٹر کریں اور شراکت داروں کے ساتھ منافع بانٹیں — سب اپنے فون سے
+  </p>
+
+  <div class="hero-cta">
+    <a href="https://dairy-management-system-ecru.vercel.app/register" class="btn-primary">
+      🚀 <span class="en-text">Start Free — 30 Days</span>
+      <span class="ur-text hidden urdu">مفت شروع کریں — 30 دن</span>
+    </a>
+    <a href="#features" class="btn-secondary">
+      👁 <span class="en-text">See Features</span>
+      <span class="ur-text hidden urdu">خصوصیات دیکھیں</span>
+    </a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <span class="hero-stat-num">30+</span>
+      <span class="hero-stat-label en-text">Features Built</span>
+      <span class="hero-stat-label-urdu ur-text hidden">خصوصیات</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num">0</span>
+      <span class="hero-stat-label en-text">Setup Cost</span>
+      <span class="hero-stat-label-urdu ur-text hidden">سیٹ اپ لاگت</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num">100%</span>
+      <span class="hero-stat-label en-text">Mobile Ready</span>
+      <span class="hero-stat-label-urdu ur-text hidden">موبائل پر کام کرے</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num">PKR</span>
+      <span class="hero-stat-label en-text">Local Currency</span>
+      <span class="hero-stat-label-urdu ur-text hidden">پاکستانی روپیہ</span>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD PREVIEW -->
+<section class="dashboard-preview fade-up">
+  <div class="section-tag">
+    <span class="en-text">Live Dashboard</span>
+    <span class="ur-text hidden">لائیو ڈیش بورڈ</span>
+    <span class="section-tag-urdu ur-text hidden">آپ کا فارم ایک نظر میں</span>
+  </div>
+  <div class="dashboard-frame">
+    <div class="dashboard-bar">
+      <div class="dashboard-dot" style="background: #ff5f57;"></div>
+      <div class="dashboard-dot" style="background: #ffbd2e;"></div>
+      <div class="dashboard-dot" style="background: #28c840;"></div>
+      <div class="dashboard-url">dairymanager.pk/dashboard</div>
+    </div>
+    <div class="dashboard-inner">
+      <div class="dashboard-hero-bar">
+        <div class="dashboard-greeting">
+          <h3>Good Morning, Muhammad Ali 👋</h3>
+          <p>Monday, March 17 · 3 animals · 2 active</p>
+        </div>
+        <div style="text-align: right;">
+          <p style="font-size: 11px; color: rgba(255,255,255,0.6); margin-bottom: 2px;">Cash Balance</p>
+          <p style="font-family: Sora, sans-serif; font-size: 22px; font-weight: 700; color: white;">PKR 2,45,000</p>
+        </div>
+      </div>
+      <div class="dashboard-kpis">
+        <div class="dashboard-kpi">
+          <div class="dashboard-kpi-icon">🥛</div>
+          <div class="dashboard-kpi-value">42L</div>
+          <div class="dashboard-kpi-label">Today's Milk · آج کا دودھ</div>
+        </div>
+        <div class="dashboard-kpi">
+          <div class="dashboard-kpi-icon">📈</div>
+          <div class="dashboard-kpi-value" style="color: #15803d;">PKR 18,500</div>
+          <div class="dashboard-kpi-label">Monthly Profit · ماہانہ منافع</div>
+        </div>
+        <div class="dashboard-kpi">
+          <div class="dashboard-kpi-icon">💳</div>
+          <div class="dashboard-kpi-value" style="color: #dc2626;">PKR 12,000</div>
+          <div class="dashboard-kpi-label">Outstanding · واجب الادا</div>
+        </div>
+        <div class="dashboard-kpi">
+          <div class="dashboard-kpi-icon">✅</div>
+          <div class="dashboard-kpi-value" style="color: #15803d;">0</div>
+          <div class="dashboard-kpi-label">Alerts · الرٹس</div>
+        </div>
+      </div>
+      <div class="dashboard-bottom">
+        <div class="dashboard-chart">
+          <div class="dashboard-chart-title">Milk Production — Last 7 Days · گزشتہ 7 دن</div>
+          <div class="chart-bars">
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height: 60%;"></div><div class="chart-bar-label">Mon</div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height: 75%;"></div><div class="chart-bar-label">Tue</div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height: 55%;"></div><div class="chart-bar-label">Wed</div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height: 80%;"></div><div class="chart-bar-label">Thu</div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height: 70%;"></div><div class="chart-bar-label">Fri</div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height: 90%;"></div><div class="chart-bar-label">Sat</div></div>
+            <div class="chart-bar-wrap"><div class="chart-bar" style="height: 100%;"></div><div class="chart-bar-label">Sun</div></div>
+          </div>
+        </div>
+        <div class="dashboard-alerts">
+          <div class="dashboard-chart-title">Alerts · الرٹس</div>
+          <div class="alert-item">
+            <div class="alert-dot" style="background: #f59e0b;"></div>
+            <span style="font-size: 12px; color: #57534e;">Vaccination due — Kaalii</span>
+          </div>
+          <div class="alert-item">
+            <div class="alert-dot" style="background: #ef4444;"></div>
+            <span style="font-size: 12px; color: #57534e;">Overdue payment — Ali Traders</span>
+          </div>
+          <div class="alert-item">
+            <div class="alert-dot" style="background: #22c55e;"></div>
+            <span style="font-size: 12px; color: #57534e;">Feed schedule applied ✓</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEMS -->
+<section class="section problems-bg fade-up" style="background: #fff7ed;">
+  <div class="section-center">
+    <div class="section-tag">
+      <span class="en-text">The Problem</span>
+      <span class="ur-text hidden">مسئلہ</span>
+      <span class="section-tag-urdu ur-text hidden">پاکستانی کسانوں کا درد</span>
+    </div>
+    <h2 class="section-title en-text">Running a dairy farm is hard enough.<br>Your software shouldn't add to it.</h2>
+    <h2 class="section-title-urdu ur-text hidden">ڈیری فارم چلانا پہلے سے مشکل ہے — آپ کا سافٹ ویئر مزید مشکل نہ بنائے</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="problems-grid">
+    <div class="problem-card fade-up">
+      <div class="problem-icon">📒</div>
+      <div class="problem-title en-text">Paper Registers Get Lost</div>
+      <div class="problem-title-urdu ur-text hidden">کاغذی رجسٹر گم ہو جاتے ہیں</div>
+      <div class="problem-desc en-text">Years of milk records, health data, and breeding history lost in a flood or fire. No backup, no recovery.</div>
+      <div class="problem-desc-urdu ur-text hidden">کئی سالوں کے دودھ کے ریکارڈ، صحت کا ڈیٹا، اور نسل کی تاریخ سیلاب یا آگ میں ضائع ہو جاتی ہے</div>
+    </div>
+    <div class="problem-card fade-up">
+      <div class="problem-icon">🤝</div>
+      <div class="problem-title en-text">Partner Disputes Over Money</div>
+      <div class="problem-title-urdu ur-text hidden">پیسوں پر شراکت داروں سے جھگڑا</div>
+      <div class="problem-desc en-text">When two people invest in a farm, fights over profit sharing and expenses are inevitable without clear records.</div>
+      <div class="problem-desc-urdu ur-text hidden">جب دو لوگ فارم میں سرمایہ کاری کریں تو واضح ریکارڈ کے بغیر منافع کی تقسیم پر جھگڑے ناگزیر ہیں</div>
+    </div>
+    <div class="problem-card fade-up">
+      <div class="problem-icon">💰</div>
+      <div class="problem-title en-text">No Idea Where Money Goes</div>
+      <div class="problem-title-urdu ur-text hidden">پیسہ کہاں جاتا ہے پتہ نہیں</div>
+      <div class="problem-desc en-text">Feed costs, vet bills, staff wages — without tracking, you never know if your farm is actually profitable.</div>
+      <div class="problem-desc-urdu ur-text hidden">چارے کے اخراجات، ڈاکٹر کے بل، مزدوروں کی تنخواہ — بغیر ٹریکنگ کے آپ کو پتہ نہیں چلتا فارم منافع دے رہا ہے یا نہیں</div>
+    </div>
+    <div class="problem-card fade-up">
+      <div class="problem-icon">💉</div>
+      <div class="problem-title en-text">Missed Vaccinations & Heat Cycles</div>
+      <div class="problem-title-urdu ur-text hidden">ٹیکے اور حمل کا وقت بھول جانا</div>
+      <div class="problem-desc en-text">One missed vaccination can cost you an animal. Missing heat cycles means no calves, no milk expansion.</div>
+      <div class="problem-desc-urdu ur-text hidden">ایک چھوٹا ہوا ٹیکہ جانور کی جان لے سکتا ہے۔ حمل کا وقت چھوٹنے کا مطلب ہے کوئی بچہ نہیں، دودھ میں کوئی اضافہ نہیں</div>
+    </div>
+    <div class="problem-card fade-up">
+      <div class="problem-icon">📱</div>
+      <div class="problem-title en-text">Can't Monitor Remotely</div>
+      <div class="problem-title-urdu ur-text hidden">دور سے نظر نہیں رکھ سکتے</div>
+      <div class="problem-desc en-text">You're in Karachi or Saudi Arabia but your farm is in Punjab. How do you know what's happening?</div>
+      <div class="problem-desc-urdu ur-text hidden">آپ کراچی یا سعودی عرب میں ہیں لیکن فارم پنجاب میں ہے — آپ کیسے جانیں کیا ہو رہا ہے؟</div>
+    </div>
+    <div class="problem-card fade-up">
+      <div class="problem-icon">🧾</div>
+      <div class="problem-title en-text">Buyers Pay Late, No Tracking</div>
+      <div class="problem-title-urdu ur-text hidden">خریدار دیر سے ادائیگی کرتے ہیں</div>
+      <div class="problem-desc en-text">Multiple milk buyers, different payment schedules, outstanding dues — all in your head with no system.</div>
+      <div class="problem-desc-urdu ur-text hidden">کئی دودھ خریدار، مختلف ادائیگی کے شیڈول، باقی رقم — سب صرف آپ کے ذہن میں، کوئی نظام نہیں</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section features-bg fade-up" id="features">
+  <div class="section-center">
+    <div class="section-tag">
+      <span class="en-text">Complete Solution</span>
+      <span class="ur-text hidden">مکمل حل</span>
+      <span class="section-tag-urdu ur-text hidden">ہر مسئلے کا جواب</span>
+    </div>
+    <h2 class="section-title en-text">Everything your farm needs,<br>in one app.</h2>
+    <h2 class="section-title-urdu ur-text hidden">آپ کے فارم کو جو کچھ چاہیے، ایک ایپ میں</h2>
+    <div class="divider"></div>
+    <p class="section-subtitle en-text">Built by a Pakistani farmer, for Pakistani farmers. Every feature solves a real problem.</p>
+    <span class="section-subtitle-urdu ur-text hidden">ایک پاکستانی کاشتکار نے، پاکستانی کاشتکاروں کے لیے بنایا۔ ہر خصوصیت ایک حقیقی مسئلہ حل کرتی ہے</span>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card fade-up">
+      <div class="feature-icon-wrap" style="background: #dcfce7;">🥛</div>
+      <div class="feature-title en-text">Milk Recording</div>
+      <div class="feature-title-urdu ur-text hidden">دودھ کا ریکارڈ</div>
+      <div class="feature-desc en-text">Record morning and evening sessions per animal. Track trends, daily averages, and compare today vs yesterday.</div>
+      <div class="feature-desc-urdu ur-text hidden">ہر جانور کا صبح و شام کا دودھ ریکارڈ کریں۔ رجحانات اور روزانہ اوسط دیکھیں</div>
+      <ul class="feature-bullets">
+        <li>Per-animal milk tracking</li>
+        <li>Morning & evening sessions</li>
+        <li>Monthly PDF reports</li>
+        <li>Milk buyer invoices</li>
+      </ul>
+    </div>
+
+    <div class="feature-card fade-up">
+      <div class="feature-icon-wrap" style="background: #dbeafe;">🐄</div>
+      <div class="feature-title en-text">Herd Management</div>
+      <div class="feature-title-urdu ur-text hidden">جانوروں کا انتظام</div>
+      <div class="feature-desc en-text">Complete animal profiles, weight tracking, buying/selling records, Qurbani animal management with profit estimates.</div>
+      <div class="feature-desc-urdu ur-text hidden">مکمل جانوروں کے پروفائل، وزن ٹریکنگ، خرید و فروخت، قربانی کے جانوروں کا انتظام</div>
+      <ul class="feature-bullets">
+        <li>Sahiwal, Friesian & all breeds</li>
+        <li>Weight gain tracking</li>
+        <li>Qurbani profit calculator</li>
+        <li>Auto finance on sale</li>
+      </ul>
+    </div>
+
+    <div class="feature-card fade-up">
+      <div class="feature-icon-wrap" style="background: #fee2e2;">💉</div>
+      <div class="feature-title en-text">Health & Vaccination</div>
+      <div class="feature-title-urdu ur-text hidden">صحت اور ویکسینیشن</div>
+      <div class="feature-desc en-text">Never miss a vaccination again. Set due dates, get alerts 7 days in advance, track vet costs per animal.</div>
+      <div class="feature-desc-urdu ur-text hidden">ویکسینیشن کبھی نہ بھولیں۔ تاریخیں سیٹ کریں، 7 دن پہلے الرٹ پائیں</div>
+      <ul class="feature-bullets">
+        <li>Vaccination due alerts</li>
+        <li>Vet cost tracking per animal</li>
+        <li>Health history PDF</li>
+        <li>Medicine records</li>
+      </ul>
+    </div>
+
+    <div class="feature-card fade-up">
+      <div class="feature-icon-wrap" style="background: #fef3c7;">🌾</div>
+      <div class="feature-title en-text">Feed Management</div>
+      <div class="feature-title-urdu ur-text hidden">چارے کا انتظام</div>
+      <div class="feature-desc en-text">Track feed inventory, costs per animal, daily schedules. Know exactly how much each cow costs to feed per month.</div>
+      <div class="feature-desc-urdu ur-text hidden">چارے کی انوینٹری، ہر جانور کی خوراک کی لاگت اور روزانہ شیڈول ٹریک کریں</div>
+      <ul class="feature-bullets">
+        <li>Weighted average pricing</li>
+        <li>Per-animal feed cost</li>
+        <li>One-click daily schedule</li>
+        <li>Low stock alerts</li>
+      </ul>
+    </div>
+
+    <div class="feature-card fade-up">
+      <div class="feature-icon-wrap" style="background: #ede9fe;">💰</div>
+      <div class="feature-title en-text">Finance & Cash Ledger</div>
+      <div class="feature-title-urdu ur-text hidden">مالیات اور کیش لیجر</div>
+      <div class="feature-desc en-text">Full cash basis accounting. Every rupee tracked — income, expenses, cash balance, and monthly profit/loss.</div>
+      <div class="feature-desc-urdu ur-text hidden">مکمل کیش بیسس اکاؤنٹنگ۔ ہر روپیہ ٹریک — آمدن، اخراجات، کیش بیلنس اور ماہانہ نفع و نقصان</div>
+      <ul class="feature-bullets">
+        <li>Income & expense tracking</li>
+        <li>Live cash balance</li>
+        <li>Balance sheet</li>
+        <li>Budget vs actual</li>
+      </ul>
+    </div>
+
+    <div class="feature-card fade-up" style="border: 2px solid var(--green); background: linear-gradient(135deg, #f0fdf4, #dcfce7);">
+      <div class="feature-icon-wrap" style="background: var(--green); color: white;">🤝</div>
+      <div class="feature-title en-text">Partner & Investment Module</div>
+      <div class="feature-title-urdu ur-text hidden">شراکت داری اور سرمایہ کاری</div>
+      <div class="feature-desc en-text" style="color: var(--green-dark); font-weight: 500;">Unique to DairyManager. No other app in Pakistan has this.</div>
+      <div class="feature-desc-urdu ur-text hidden" style="color: var(--green-dark);">صرف ڈیری مینیجر میں — پاکستان میں کسی اور ایپ میں یہ نہیں</div>
+      <ul class="feature-bullets">
+        <li>Partner capital tracking</li>
+        <li>Profit distribution calculator</li>
+        <li>Partner PDF statements</li>
+        <li>Farm valuation with equity</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNER HIGHLIGHT -->
+<section class="partner-section fade-up">
+  <div class="partner-content">
+    <div class="partner-text">
+      <h2 class="en-text">Built for <span class="highlight">Farm Partnerships.</span><br>Unique in Pakistan.</h2>
+      <span class="partner-text-urdu ur-text hidden">شراکت داری کے لیے بنایا گیا — پاکستان میں منفرد</span>
+
+      <p class="en-text">When you invest with a partner, you need complete transparency. How much did each person invest? What's their share of this month's profit? How much is their equity worth today?</p>
+      <p class="urdu-p ur-text hidden">جب آپ کسی کے ساتھ مل کر سرمایہ لگاتے ہیں تو آپ کو مکمل شفافیت چاہیے۔ کس نے کتنا لگایا؟ اس مہینے کا منافع کیا ہے؟</p>
+
+      <div class="partner-features">
+        <div class="partner-feature">
+          <div class="partner-feature-icon">📊</div>
+          <div>
+            <span class="en-text">Capital contributions tracking per partner</span>
+            <span class="partner-feature-urdu ur-text hidden">ہر شراکت دار کی سرمایہ کاری کا ریکارڈ</span>
+          </div>
+        </div>
+        <div class="partner-feature">
+          <div class="partner-feature-icon">💸</div>
+          <div>
+            <span class="en-text">Monthly profit distribution calculator</span>
+            <span class="partner-feature-urdu ur-text hidden">ماہانہ منافع کی تقسیم کا حساب</span>
+          </div>
+        </div>
+        <div class="partner-feature">
+          <div class="partner-feature-icon">📄</div>
+          <div>
+            <span class="en-text">PDF statements your partner can trust</span>
+            <span class="partner-feature-urdu ur-text hidden">پی ڈی ایف بیانات جن پر آپ کا شراکت دار بھروسہ کر سکے</span>
+          </div>
+        </div>
+        <div class="partner-feature">
+          <div class="partner-feature-icon">🏭</div>
+          <div>
+            <span class="en-text">Full farm valuation with equity breakdown</span>
+            <span class="partner-feature-urdu ur-text hidden">مکمل فارم کی قیمت اور حصص کی تفصیل</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="partner-card">
+      <div class="partner-card-header">
+        <div class="partner-avatar">👤</div>
+        <div>
+          <div class="partner-card-name">Hassan (Partner)</div>
+          <div class="partner-card-role">40% Share · سرمایہ کار</div>
+        </div>
+      </div>
+
+      <div class="partner-stat-row">
+        <div class="partner-stat-box">
+          <span class="partner-stat-val">PKR 5L</span>
+          <span class="partner-stat-lbl">Invested · سرمایہ</span>
+        </div>
+        <div class="partner-stat-box">
+          <span class="partner-stat-val">24%</span>
+          <span class="partner-stat-lbl">ROI · منافع</span>
+        </div>
+        <div class="partner-stat-box">
+          <span class="partner-stat-val">PKR 7,400</span>
+          <span class="partner-stat-lbl">This Month · اس مہینے</span>
+        </div>
+        <div class="partner-stat-box">
+          <span class="partner-stat-val">PKR 7.2L</span>
+          <span class="partner-stat-lbl">Equity · حصہ</span>
+        </div>
+      </div>
+
+      <div class="partner-bar-label">
+        <span>Capital Recovered</span>
+        <span>24%</span>
+      </div>
+      <div class="partner-bar">
+        <div class="partner-bar-fill" style="width: 24%;"></div>
+      </div>
+
+      <div style="background: rgba(255,255,255,0.08); border-radius: 10px; padding: 12px; margin-top: 8px;">
+        <div style="font-size: 11px; color: rgba(255,255,255,0.5); margin-bottom: 4px;">Last Distribution</div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 13px; color: rgba(255,255,255,0.8);">February 2026</span>
+          <span style="font-family: Sora, sans-serif; font-size: 16px; font-weight: 700; color: #86efac;">PKR 6,800</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section pricing-bg fade-up" id="pricing">
+  <div class="section-center">
+    <div class="section-tag">
+      <span class="en-text">Simple Pricing</span>
+      <span class="ur-text hidden">سادہ قیمت</span>
+      <span class="section-tag-urdu ur-text hidden">پاکستانی کسانوں کے لیے سستی قیمت</span>
+    </div>
+    <h2 class="section-title en-text">Start free. Upgrade when you're ready.</h2>
+    <h2 class="section-title-urdu ur-text hidden">مفت شروع کریں۔ جب تیار ہوں اپگریڈ کریں</h2>
+    <div class="divider"></div>
+    <p class="section-subtitle en-text">30-day free trial on all plans. No credit card required. Cancel anytime.</p>
+    <span class="section-subtitle-urdu ur-text hidden">تمام پلانز پر 30 دن مفت آزمائیں۔ کریڈٹ کارڈ کی ضرورت نہیں۔ کبھی بھی منسوخ کریں</span>
+  </div>
+
+  <div class="pricing-grid">
+    <div class="pricing-card fade-up">
+      <div class="pricing-tier en-text">Starter</div>
+      <div class="pricing-tier-urdu ur-text hidden">بنیادی</div>
+      <div class="pricing-price">PKR 999 <span>/ month</span></div>
+      <div class="pricing-desc en-text">For small farms with up to 10 animals</div>
+      <div class="pricing-desc-urdu ur-text hidden">10 تک جانوروں والے چھوٹے فارموں کے لیے</div>
+      <a href="https://dairy-management-system-ecru.vercel.app/register" class="pricing-btn outline">
+        <span class="en-text">Start Free Trial</span>
+        <span class="ur-text hidden">مفت آزمائیں</span>
+      </a>
+      <ul class="pricing-features">
+        <li><span class="check">✓</span><span class="en-text">Up to 10 animals</span><span class="ur-text hidden urdu">10 تک جانور</span></li>
+        <li><span class="check">✓</span><span class="en-text">Milk recording</span><span class="ur-text hidden urdu">دودھ کا ریکارڈ</span></li>
+        <li><span class="check">✓</span><span class="en-text">Basic health records</span><span class="ur-text hidden urdu">بنیادی صحت ریکارڈ</span></li>
+        <li><span class="check">✓</span><span class="en-text">Basic finance</span><span class="ur-text hidden urdu">بنیادی مالیات</span></li>
+        <li><span class="check">✓</span><span class="en-text">Today's summary</span><span class="ur-text hidden urdu">آج کا خلاصہ</span></li>
+        <li><span class="check">✓</span><span class="en-text">Mobile app (PWA)</span><span class="ur-text hidden urdu">موبائل ایپ</span></li>
+        <li><span class="cross">✗</span><span class="en-text">Staff management</span><span class="ur-text hidden urdu">عملے کا انتظام</span></li>
+        <li><span class="cross">✗</span><span class="en-text">Partners module</span><span class="ur-text hidden urdu">شراکت داری ماڈیول</span></li>
+        <li><span class="cross">✗</span><span class="en-text">PDF reports</span><span class="ur-text hidden urdu">پی ڈی ایف رپورٹس</span></li>
+      </ul>
+    </div>
+
+    <div class="pricing-card featured fade-up">
+      <div class="pricing-badge">
+        <span class="en-text">Most Popular · سب سے مقبول</span>
+      </div>
+      <div class="pricing-tier en-text">Farmer</div>
+      <div class="pricing-tier-urdu ur-text hidden">کسان</div>
+      <div class="pricing-price">PKR 2,499 <span>/ month</span></div>
+      <div class="pricing-desc en-text">For growing farms, full features except partners</div>
+      <div class="pricing-desc-urdu ur-text hidden">بڑھتے ہوئے فارموں کے لیے، شراکت داری کے علاوہ مکمل خصوصیات</div>
+      <a href="https://dairy-management-system-ecru.vercel.app/register" class="pricing-btn primary">
+        <span class="en-text">Start Free Trial</span>
+        <span class="ur-text hidden">مفت آزمائیں</span>
+      </a>
+      <ul class="pricing-features">
+        <li><span class="check">✓</span><span class="en-text">Unlimited animals</span><span class="ur-text hidden urdu">لامحدود جانور</span></li>
+        <li><span class="check">✓</span><span class="en-text">Full milk + buyers module</span><span class="ur-text hidden urdu">دودھ + خریداروں کا ماڈیول</span></li>
+        <li><span class="check">✓</span><span class="en-text">Feed + schedule</span><span class="ur-text hidden urdu">چارہ + شیڈول</span></li>
+        <li><span class="check">✓</span><span class="en-text">Staff + salary slips</span><span class="ur-text hidden urdu">عملہ + تنخواہ سلپ</span></li>
+        <li><span class="check">✓</span><span class="en-text">Breeding management</span><span class="ur-text hidden urdu">نسل کشی کا انتظام</span></li>
+        <li><span class="check">✓</span><span class="en-text">Monthly PDF reports</span><span class="ur-text hidden urdu">ماہانہ پی ڈی ایف رپورٹس</span></li>
+        <li><span class="check">✓</span><span class="en-text">3 team members</span><span class="ur-text hidden urdu">3 ٹیم ممبر</span></li>
+        <li><span class="cross">✗</span><span class="en-text">Partners module</span><span class="ur-text hidden urdu">شراکت داری ماڈیول</span></li>
+        <li><span class="cross">✗</span><span class="en-text">Balance sheet</span><span class="ur-text hidden urdu">بیلنس شیٹ</span></li>
+      </ul>
+    </div>
+
+    <div class="pricing-card fade-up">
+      <div class="pricing-tier en-text">Business</div>
+      <div class="pricing-tier-urdu ur-text hidden">کاروبار</div>
+      <div class="pricing-price">PKR 4,999 <span>/ month</span></div>
+      <div class="pricing-desc en-text">For farms with investors and partners</div>
+      <div class="pricing-desc-urdu ur-text hidden">سرمایہ کاروں اور شراکت داروں والے فارموں کے لیے</div>
+      <a href="https://dairy-management-system-ecru.vercel.app/register" class="pricing-btn outline">
+        <span class="en-text">Start Free Trial</span>
+        <span class="ur-text hidden">مفت آزمائیں</span>
+      </a>
+      <ul class="pricing-features">
+        <li><span class="check">✓</span><span class="en-text">Everything in Farmer</span><span class="ur-text hidden urdu">کسان پلان سب کچھ</span></li>
+        <li><span class="check">✓</span><span class="en-text">Partners module</span><span class="ur-text hidden urdu">شراکت داری ماڈیول</span></li>
+        <li><span class="check">✓</span><span class="en-text">Balance sheet + cash ledger</span><span class="ur-text hidden urdu">بیلنس شیٹ + کیش لیجر</span></li>
+        <li><span class="check">✓</span><span class="en-text">Budget vs actual</span><span class="ur-text hidden urdu">بجٹ بمقابلہ اصل</span></li>
+        <li><span class="check">✓</span><span class="en-text">Partner PDF statements</span><span class="ur-text hidden urdu">شراکت دار کے بیانات</span></li>
+        <li><span class="check">✓</span><span class="en-text">Farm valuation report</span><span class="ur-text hidden urdu">فارم کی قیمت رپورٹ</span></li>
+        <li><span class="check">✓</span><span class="en-text">Unlimited team members</span><span class="ur-text hidden urdu">لامحدود ٹیم ممبر</span></li>
+        <li><span class="check">✓</span><span class="en-text">Priority support</span><span class="ur-text hidden urdu">ترجیحی سپورٹ</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="text-align: center; margin-top: 32px;">
+    <p style="font-size: 14px; color: var(--earth);" class="en-text">
+      💡 Annual plans save 2 months · All plans include 30-day free trial · Pay via JazzCash, Easypaisa, or bank transfer
+    </p>
+    <p style="font-family: 'Noto Nastaliq Urdu', serif; font-size: 13px; color: var(--earth); direction: rtl; margin-top: 6px;" class="ur-text hidden">
+      سالانہ پلان پر 2 ماہ مفت · تمام پلانز میں 30 دن مفت · JazzCash، Easypaisa یا بینک ٹرانسفر سے ادائیگی
+    </p>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section testimonials-bg fade-up">
+  <div class="section-center">
+    <div class="section-tag">
+      <span class="en-text">What Farmers Say</span>
+      <span class="ur-text hidden">کسان کیا کہتے ہیں</span>
+    </div>
+    <h2 class="section-title en-text">Real results from real farms.</h2>
+    <h2 class="section-title-urdu ur-text hidden">حقیقی فارموں کے حقیقی نتائج</h2>
+    <div class="divider"></div>
+  </div>
+
+  <div class="testimonials-grid">
+    <div class="testimonial-card fade-up">
+      <div class="stars">★★★★★</div>
+      <div class="testimonial-quote">"</div>
+      <p class="testimonial-text en-text">Before DairyManager, I had no idea my farm was losing money. Now I see exactly where every rupee goes. My partner and I haven't had a single argument since we started using it.</p>
+      <p class="testimonial-text-urdu ur-text hidden">ڈیری مینیجر سے پہلے مجھے نہیں پتہ تھا کہ فارم نقصان میں جا رہا ہے۔ اب میں دیکھتا ہوں کہ ہر روپیہ کہاں جاتا ہے۔ میرے شراکت دار سے کبھی جھگڑا نہیں ہوا اس کے بعد سے</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">🧑‍🌾</div>
+        <div>
+          <div class="testimonial-name">Muhammad Tariq</div>
+          <div class="testimonial-location">Okara, Punjab · 15 Sahiwal cows</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card fade-up">
+      <div class="stars">★★★★★</div>
+      <div class="testimonial-quote">"</div>
+      <p class="testimonial-text en-text">I manage my farm from Saudi Arabia. Every morning I check DairyManager to see how much milk was recorded, which animals need attention, and what my cash balance is. It's like being there.</p>
+      <p class="testimonial-text-urdu ur-text hidden">میں سعودی عرب سے اپنا فارم چلاتا ہوں۔ ہر صبح میں ڈیری مینیجر چیک کرتا ہوں۔ ایسا لگتا ہے جیسے میں وہاں موجود ہوں</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">👨‍💼</div>
+        <div>
+          <div class="testimonial-name">Sikander Ali</div>
+          <div class="testimonial-location">Sara-e-Alamgir · Managing remotely from KSA</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card fade-up">
+      <div class="stars">★★★★★</div>
+      <div class="testimonial-quote">"</div>
+      <p class="testimonial-text en-text">The Qurbani module alone is worth the subscription. I can track the weight gain of each animal and estimate profit before Eid. Last year I made 40% more profit.</p>
+      <p class="testimonial-text-urdu ur-text hidden">قربانی ماڈیول اکیلا ہی سبسکرپشن کی قیمت ادا کرتا ہے۔ میں ہر جانور کا وزن بڑھنا ٹریک کرتا ہوں۔ پچھلے سال 40% زیادہ منافع ہوا</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">🤠</div>
+        <div>
+          <div class="testimonial-name">Ghulam Mustafa</div>
+          <div class="testimonial-location">Bahawalpur · Seasonal cattle trader</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section fade-up">
+  <h2 class="en-text">Ready to transform your farm?</h2>
+  <span style="font-family: 'Noto Nastaliq Urdu', serif; font-size: clamp(18px, 2.5vw, 28px); color: rgba(255,255,255,0.7); direction: rtl; display: block; margin-bottom: 16px;" class="ur-text hidden">
+    اپنا فارم بدلنے کے لیے تیار ہیں؟
+  </span>
+  <p class="en-text">Join farmers across Pakistan who manage smarter with DairyManager.</p>
+  <p class="urdu-p ur-text hidden">پاکستان بھر کے ان کسانوں میں شامل ہوں جو ڈیری مینیجر سے ذہانت سے انتظام کرتے ہیں</p>
+
+  <div class="cta-buttons">
+    <a href="https://dairy-management-system-ecru.vercel.app/register" class="btn-primary" style="font-size: 16px; padding: 16px 36px;">
+      🚀 <span class="en-text">Start Free for 30 Days</span>
+      <span class="ur-text hidden urdu">30 دن مفت شروع کریں</span>
+    </a>
+    <a href="https://wa.me/923001234567?text=Assalam+o+Alaikum,+mujhe+DairyManager+ke+baare+mein+maloomat+chahiye" class="whatsapp-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      <span class="en-text">Chat on WhatsApp</span>
+      <span class="ur-text hidden">WhatsApp پر بات کریں</span>
+    </a>
+  </div>
+
+  <p class="cta-note en-text">No credit card · Free 30 days · Pay via JazzCash or Easypaisa</p>
+  <p class="cta-note ur-text hidden urdu" style="margin-top: 4px;">کریڈٹ کارڈ نہیں · 30 دن مفت · JazzCash یا Easypaisa سے ادائیگی</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand-name">🐄 DairyManager</div>
+      <p class="footer-brand-desc en-text">Pakistan's most complete dairy farm management software. Built by a farmer, for farmers.</p>
+      <span class="footer-brand-desc-urdu ur-text hidden">پاکستان کا سب سے مکمل ڈیری فارم مینجمنٹ سافٹ ویئر۔ ایک کسان نے کسانوں کے لیے بنایا</span>
+      <div style="display: flex; gap: 12px; margin-top: 16px;">
+        <a href="https://wa.me/923001234567" style="color: rgba(255,255,255,0.5); text-decoration: none; font-size: 22px;" title="WhatsApp">📱</a>
+        <a href="mailto:info@dairymanager.pk" style="color: rgba(255,255,255,0.5); text-decoration: none; font-size: 22px;" title="Email">📧</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-heading en-text">Product</div>
+      <ul class="footer-links">
+        <li><a href="#features" class="en-text">Features</a><a href="#features" class="ur-text hidden urdu">خصوصیات</a></li>
+        <li><a href="#pricing" class="en-text">Pricing</a><a href="#pricing" class="ur-text hidden urdu">قیمت</a></li>
+        <li><a href="https://dairy-management-system-ecru.vercel.app/register" class="en-text">Free Trial</a><a href="https://dairy-management-system-ecru.vercel.app/register" class="ur-text hidden urdu">مفت آزمائیں</a></li>
+        <li><a href="https://dairy-management-system-ecru.vercel.app/login" class="en-text">Login</a><a href="https://dairy-management-system-ecru.vercel.app/login" class="ur-text hidden urdu">لاگ ان</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading en-text">Support</div>
+      <ul class="footer-links">
+        <li><a href="https://wa.me/923001234567" class="en-text">WhatsApp Support</a><a href="https://wa.me/923001234567" class="ur-text hidden urdu">WhatsApp سپورٹ</a></li>
+        <li><a href="mailto:info@dairymanager.pk" class="en-text">Email Us</a><a href="mailto:info@dairymanager.pk" class="ur-text hidden urdu">ای میل کریں</a></li>
+        <li><a href="#" class="en-text">Privacy Policy</a><a href="#" class="ur-text hidden urdu">رازداری کی پالیسی</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 DairyManager. All rights reserved.</span>
+    <span class="footer-made en-text">Made with <span>♥</span> in Pakistan</span>
+    <span class="footer-made ur-text hidden urdu" style="font-family: 'Noto Nastaliq Urdu', serif; direction: rtl;">پاکستان میں محبت سے بنایا گیا <span>♥</span></span>
+  </div>
+</footer>
+
+<script>
+  let isUrdu = false;
+
+  function toggleLang() {
+    isUrdu = !isUrdu;
+    const btn = document.getElementById('langBtn');
+
+    document.querySelectorAll('.en-text').forEach(el => {
+      el.classList.toggle('hidden', isUrdu);
+    });
+
+    document.querySelectorAll('.ur-text').forEach(el => {
+      el.classList.toggle('hidden', !isUrdu);
+    });
+
+    btn.textContent = isUrdu ? 'English' : 'اردو';
+    document.documentElement.setAttribute('lang', isUrdu ? 'ur' : 'en');
+  }
+
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+
+</body>
+</html>

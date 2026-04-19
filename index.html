@@ -38,6 +38,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="DairyManager">
 <meta name="theme-color" content="#15803d">
+
 <!-- Google tag (gtag.js) -->
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-CMMMM9BM3E"></script>
@@ -53,6 +54,15 @@
   gtag('config', 'G-CMMMM9BM3E');
 
 </script>
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-W43TXQZB');</script>
+<!-- End Google Tag Manager -->
+
 <!-- Resource Hints -->
 <link rel="dns-prefetch" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1397,6 +1407,11 @@
 </head>
 <body>
 
+  <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W43TXQZB"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
 <!-- NAVBAR -->
 <nav>
   <a href="#" class="nav-logo">
@@ -2052,6 +2067,98 @@
     });
   });
 </script>
+// Enhanced Click Tracking for DairyManager
+(function() {
+  'use strict';
+  
+  // Track all CTA clicks
+  document.addEventListener('click', function(e) {
+    const target = e.target.closest('a, button');
+    if (!target) return;
+    
+    const href = target.getAttribute('href') || '';
+    const text = target.textContent.trim();
+    
+    // Signup clicks
+    if (href.includes('app.dairymanager.pk/register')) {
+      gtag('event', 'signup_click', {
+        'event_category': 'conversion',
+        'event_label': text,
+        'value': 1
+      });
+    }
+    
+    // Demo clicks
+    if (href.includes('app.dairymanager.pk/login')) {
+      gtag('event', 'demo_click', {
+        'event_category': 'conversion',
+        'event_label': text,
+        'value': 1
+      });
+    }
+    
+    // WhatsApp clicks
+    if (href.includes('wa.me')) {
+      gtag('event', 'whatsapp_click', {
+        'event_category': 'engagement',
+        'event_label': 'WhatsApp Support',
+        'value': 1
+      });
+    }
+    
+    // Pricing plan clicks
+    if (target.classList.contains('pricing-btn')) {
+      const plan = target.closest('.pricing-card');
+      const planName = plan ? plan.querySelector('.pricing-tier').textContent : 'Unknown';
+      gtag('event', 'pricing_plan_click', {
+        'event_category': 'engagement',
+        'event_label': planName,
+        'value': 1
+      });
+    }
+    
+    // Language toggle
+    if (target.classList.contains('lang-toggle')) {
+      gtag('event', 'language_switch', {
+        'event_category': 'engagement',
+        'event_label': 'Urdu/English Toggle',
+        'value': 1
+      });
+    }
+  });
+  
+  // Track scroll depth
+  let scrollDepth = 0;
+  const milestones = [25, 50, 75, 100];
+  
+  window.addEventListener('scroll', function() {
+    const percent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+    
+    milestones.forEach(function(milestone) {
+      if (percent >= milestone && scrollDepth < milestone) {
+        scrollDepth = milestone;
+        gtag('event', 'scroll_depth', {
+          'event_category': 'engagement',
+          'event_label': milestone + '%',
+          'value': milestone
+        });
+      }
+    });
+  });
+  
+  // Track time on page
+  let startTime = Date.now();
+  
+  window.addEventListener('beforeunload', function() {
+    const timeSpent = Math.round((Date.now() - startTime) / 1000);
+    gtag('event', 'time_on_page', {
+      'event_category': 'engagement',
+      'event_label': 'seconds',
+      'value': timeSpent
+    });
+  });
+  
+})();
 
 </body>
 </html>
